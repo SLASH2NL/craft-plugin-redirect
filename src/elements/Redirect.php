@@ -10,12 +10,10 @@ namespace dolphiq\redirect\elements;
 
 use Craft;
 use craft\base\Element;
-use craft\elements\actions\Edit;
 use craft\elements\db\ElementQueryInterface;
 use craft\helpers\Html;
 use craft\helpers\UrlHelper;
 use craft\validators\DateTimeValidator;
-use dolphiq\redirect\elements\actions\DeleteRedirects;
 use dolphiq\redirect\elements\db\RedirectQuery;
 use dolphiq\redirect\records\Redirect as RedirectRecord;
 use Throwable;
@@ -92,15 +90,13 @@ class Redirect extends Element
         return true;
     }
 
-
     /**
      * @inheritdoc
      */
-    public function getIsEditable(): bool
+    public function canDelete(User $user): bool
     {
         return true;
     }
-
 
     public function getSupportedSites(): array
     {
@@ -256,28 +252,6 @@ class Redirect extends Element
         }
 
         return parent::tableAttributeHtml($attribute);
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    protected static function defineActions(string $source = null): array
-    {
-        $actions = [];
-
-        // Edit
-        $actions[] = Craft::$app->getElements()->createAction(
-            [
-                'type' => Edit::class,
-                'label' => Craft::t('redirect', 'Edit redirect'),
-            ]
-        );
-
-        // Delete
-        $actions[] = DeleteRedirects::class;
-
-        return $actions;
     }
 
     /**
